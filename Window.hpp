@@ -11,7 +11,28 @@
 namespace Window {
 
 	float aspectRatio;
-	GLFWwindow* windowPtr;
+	static GLFWwindow* windowPtr;
+
+	static bool isFullscreen = false;
+
+	void KeyCallback (GLFWwindow* window, int key, int scancode, int action, int mods) {
+		if (key == GLFW_KEY_F11 && action == GLFW_PRESS) {
+			int monitorcount = 0;
+			GLFWmonitor** monitors = glfwGetMonitors(&monitorcount);
+			const GLFWvidmode* mode = glfwGetVideoMode(monitors[0]);
+
+			switch (isFullscreen) {
+			case false:
+				glfwSetWindowMonitor(windowPtr, monitors[0], 0, 0, mode->width, mode->height, mode->refreshRate);
+				isFullscreen = !isFullscreen;
+				break;
+			case true:
+				glfwSetWindowMonitor(windowPtr, nullptr, mode->width / 2 - (mode->width / 2) / 2, mode->height / 2 - (mode->height / 2) / 2, mode->width / 2, mode->height / 2, mode->refreshRate);
+				isFullscreen = !isFullscreen;
+				break;
+			}
+		}
+	}
 
 	void WindowResizeCallback(GLFWwindow* window, int width, int height) {
 		glViewport(0, 0, width, height);
@@ -25,7 +46,7 @@ namespace Window {
 		}
 	}
 
-	void Init(unsigned int& width, unsigned int& height, const char* name, const std::vector<WindowHint>& hints) {
+	void Init(const char* name, const std::vector<WindowHint>& hints) {
 		switch (glfwInit()) {
 		case GLFW_TRUE:
 			DEBUGPRINT("GLFW initailized");
@@ -40,15 +61,12 @@ namespace Window {
 
 		DEBUGFUNC(glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE));
 
-		int monitorCount;
-		GLFWmonitor** monitors = glfwGetMonitors(&monitorCount);
+		int monitorcount = 0;
+		GLFWmonitor** monitors = glfwGetMonitors(&monitorcount);
+		const GLFWvidmode* mode = glfwGetVideoMode(monitors[0]);
 
-		if (monitorCount > 1) {
-			windowPtr = glfwCreateWindow(width, height, name, monitors[2], nullptr);
-		}
-		else {
-			windowPtr = glfwCreateWindow(width, height, name, nullptr, nullptr);
-		}
+		windowPtr = glfwCreateWindow(mode->width / 2, mode->height / 2, name, nullptr, nullptr);
+		glfwSetWindowPos(windowPtr, mode->width / 2 - (mode->width / 2) / 2, mode->height / 2 - (mode->height / 2) / 2);
 
 		if (!windowPtr)
 			throw std::exception("GLFW faile to create window");
@@ -56,6 +74,7 @@ namespace Window {
 		glfwMakeContextCurrent(windowPtr);
 
 		glfwSetFramebufferSizeCallback(windowPtr, WindowResizeCallback);
+		glfwSetKeyCallback(windowPtr, KeyCallback);
 
 		switch (gladLoadGL())
 		{
@@ -69,14 +88,14 @@ namespace Window {
 
 		DEBUGFUNC(
 			glEnable(GL_DEBUG_OUTPUT);
-		glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
-		glDebugMessageCallback(debug::glDebugOutput, nullptr);
-		glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_NOTIFICATION, 0, nullptr, GL_FALSE);
-		DEBUGPRINT("OpenGL Debug Enabled");
+			glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+			glDebugMessageCallback(debug::glDebugOutput, nullptr);
+			glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_NOTIFICATION, 0, nullptr, GL_FALSE);
+			DEBUGPRINT("OpenGL Debug Enabled");
 		);
 
-		aspectRatio = (float)width / (float)height;
-		glViewport(0, 0, width, height);
+		aspectRatio = ((float)mode->width / 2) / ((float)mode->height / 2);
+		glViewport(0, 0, mode->width / 2, mode->height / 2);
 	}
 
 	void Terminate() {
@@ -93,7 +112,7 @@ namespace Window {
 		if (glfwGetKey(windowPtr, GLFW_KEY_ESCAPE)) {
 			glfwSetWindowShouldClose(windowPtr, true);
 		}
-
+	
 		return (!glfwWindowShouldClose(windowPtr));
 	}
 }

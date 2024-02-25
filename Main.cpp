@@ -3,10 +3,6 @@
 #include "Camera.hpp"
 #include "Mesh.hpp"	
 
-
-unsigned int RENDER_WIDTH = 1920;
-unsigned int RENDER_HEIGHT = 1080;
-
 std::vector<WindowHint> hints = { WindowHint(GLFW_CONTEXT_VERSION_MAJOR,	4),
 								  WindowHint(GLFW_CONTEXT_VERSION_MINOR,	6),
 								  WindowHint(GLFW_OPENGL_PROFILE,			GLFW_OPENGL_CORE_PROFILE) };
@@ -27,7 +23,7 @@ std::vector<GLuint> indices = {
 };
 
 int main() {
-	Window::Init(RENDER_WIDTH, RENDER_HEIGHT, "Game Window", hints);
+	Window::Init("Game Window", hints);
 
 	Shader shader("Basic");
 	shader.Bind();
