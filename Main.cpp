@@ -4,8 +4,8 @@
 #include "Mesh.hpp"	
 
 
-unsigned int RENDER_WIDTH = 1280;
-unsigned int RENDER_HEIGHT = 720;
+unsigned int RENDER_WIDTH = 1920;
+unsigned int RENDER_HEIGHT = 1080;
 
 std::vector<WindowHint> hints = { WindowHint(GLFW_CONTEXT_VERSION_MAJOR,	4),
 								  WindowHint(GLFW_CONTEXT_VERSION_MINOR,	6),
@@ -25,7 +25,6 @@ std::vector<GLuint> indices = {
 	3, 2, 4, // Upper triangle
 	5, 4, 1 // Lower right triangle
 };
-
 
 int main() {
 	Window::Init(RENDER_WIDTH, RENDER_HEIGHT, "Game Window", hints);
@@ -47,7 +46,7 @@ int main() {
 
 		camera.SendMatrix(shader);
 
-		glDrawElements(GL_TRIANGLES, mesh.indices.size(), GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(mesh.indices.size()), GL_UNSIGNED_INT, 0);
 	}
 
 	Window::Terminate();

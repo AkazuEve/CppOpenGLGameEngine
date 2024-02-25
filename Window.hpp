@@ -15,7 +15,14 @@ namespace Window {
 
 	void WindowResizeCallback(GLFWwindow* window, int width, int height) {
 		glViewport(0, 0, width, height);
-		aspectRatio = (float)width / (float)height;
+		if(width == 0 && height == 0) {
+			aspectRatio = 1.0f;
+			DEBUGPRINT("Window was minimized, avoiding explosions");
+		}
+		else {
+			aspectRatio = (float)width / (float)height;
+			DEBUGPRINT("Resolution changed width: " << width << " height: " << height << " aspect ratio: " << aspectRatio);
+		}
 	}
 
 	void Init(unsigned int& width, unsigned int& height, const char* name, const std::vector<WindowHint>& hints) {
@@ -33,7 +40,15 @@ namespace Window {
 
 		DEBUGFUNC(glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE));
 
-		windowPtr = glfwCreateWindow(width, height, name, nullptr, nullptr);
+		int monitorCount;
+		GLFWmonitor** monitors = glfwGetMonitors(&monitorCount);
+
+		if (monitorCount > 1) {
+			windowPtr = glfwCreateWindow(width, height, name, monitors[2], nullptr);
+		}
+		else {
+			windowPtr = glfwCreateWindow(width, height, name, nullptr, nullptr);
+		}
 
 		if (!windowPtr)
 			throw std::exception("GLFW faile to create window");
