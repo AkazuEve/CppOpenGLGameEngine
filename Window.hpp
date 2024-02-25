@@ -15,6 +15,10 @@ namespace Window {
 
 	static bool isFullscreen = false;
 
+	static void ErrorCallback(int error, const char* description) {
+		fprintf(stderr, "GLFW Error %d: %s\n", error, description);
+	}
+
 	void KeyCallback (GLFWwindow* window, int key, int scancode, int action, int mods) {
 		if (key == GLFW_KEY_F11 && action == GLFW_PRESS) {
 			int monitorcount = 0;
@@ -34,7 +38,7 @@ namespace Window {
 		}
 	}
 
-	void WindowResizeCallback(GLFWwindow* window, int width, int height) {
+	static void WindowResizeCallback(GLFWwindow* window, int width, int height) {
 		glViewport(0, 0, width, height);
 		if(width == 0 && height == 0) {
 			aspectRatio = 1.0f;
@@ -46,7 +50,9 @@ namespace Window {
 		}
 	}
 
-	void Init(const char* name, const std::vector<WindowHint>& hints) {
+	static void Init(const char* name, const std::vector<WindowHint>& hints) {
+		glfwSetErrorCallback(ErrorCallback);
+
 		switch (glfwInit()) {
 		case GLFW_TRUE:
 			DEBUGPRINT("GLFW initailized");
