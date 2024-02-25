@@ -37,6 +37,9 @@
     <Filter Include="Header Files\Modules\UI">
       <UniqueIdentifier>{84039c82-e478-4da1-bba5-08e9dad71b84}</UniqueIdentifier>
     </Filter>
+    <Filter Include="External Libs\imgui">
+      <UniqueIdentifier>{0c1753c2-c2b4-4968-8055-a59cfb117948}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Dependecies\include\glad\glad.c">
@@ -44,6 +47,27 @@
     </ClCompile>
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependecies\include\imgui\imgui.cpp">
+      <Filter>External Libs\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependecies\include\imgui\imgui_demo.cpp">
+      <Filter>External Libs\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependecies\include\imgui\imgui_draw.cpp">
+      <Filter>External Libs\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependecies\include\imgui\imgui_impl_glfw.cpp">
+      <Filter>External Libs\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependecies\include\imgui\imgui_impl_opengl3.cpp">
+      <Filter>External Libs\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependecies\include\imgui\imgui_tables.cpp">
+      <Filter>External Libs\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependecies\include\imgui\imgui_widgets.cpp">
+      <Filter>External Libs\imgui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -70,6 +94,33 @@
     </ClInclude>
     <ClInclude Include="Util.hpp">
       <Filter>Header Files\Modules\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependecies\include\imgui\imconfig.h">
+      <Filter>External Libs\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependecies\include\imgui\imgui.h">
+      <Filter>External Libs\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependecies\include\imgui\imgui_impl_glfw.h">
+      <Filter>External Libs\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependecies\include\imgui\imgui_impl_opengl3.h">
+      <Filter>External Libs\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependecies\include\imgui\imgui_impl_opengl3_loader.h">
+      <Filter>External Libs\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependecies\include\imgui\imgui_internal.h">
+      <Filter>External Libs\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependecies\include\imgui\imstb_rectpack.h">
+      <Filter>External Libs\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependecies\include\imgui\imstb_textedit.h">
+      <Filter>External Libs\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependecies\include\imgui\imstb_truetype.h">
+      <Filter>External Libs\imgui</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

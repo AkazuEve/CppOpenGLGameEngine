@@ -85,11 +85,27 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Dependecies\include\glad\glad.c" />
+    <ClCompile Include="Dependecies\include\imgui\imgui.cpp" />
+    <ClCompile Include="Dependecies\include\imgui\imgui_demo.cpp" />
+    <ClCompile Include="Dependecies\include\imgui\imgui_draw.cpp" />
+    <ClCompile Include="Dependecies\include\imgui\imgui_impl_glfw.cpp" />
+    <ClCompile Include="Dependecies\include\imgui\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="Dependecies\include\imgui\imgui_tables.cpp" />
+    <ClCompile Include="Dependecies\include\imgui\imgui_widgets.cpp" />
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.hpp" />
     <ClInclude Include="Debug.hpp" />
+    <ClInclude Include="Dependecies\include\imgui\imconfig.h" />
+    <ClInclude Include="Dependecies\include\imgui\imgui.h" />
+    <ClInclude Include="Dependecies\include\imgui\imgui_impl_glfw.h" />
+    <ClInclude Include="Dependecies\include\imgui\imgui_impl_opengl3.h" />
+    <ClInclude Include="Dependecies\include\imgui\imgui_impl_opengl3_loader.h" />
+    <ClInclude Include="Dependecies\include\imgui\imgui_internal.h" />
+    <ClInclude Include="Dependecies\include\imgui\imstb_rectpack.h" />
+    <ClInclude Include="Dependecies\include\imgui\imstb_textedit.h" />
+    <ClInclude Include="Dependecies\include\imgui\imstb_truetype.h" />
     <ClInclude Include="Renderer.hpp" />
     <ClInclude Include="Shader.hpp" />
     <ClInclude Include="Time.hpp" />
