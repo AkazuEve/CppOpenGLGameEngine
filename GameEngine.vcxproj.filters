@@ -122,5 +122,8 @@
     <ClInclude Include="Dependecies\include\imgui\imstb_truetype.h">
       <Filter>External Libs\imgui</Filter>
     </ClInclude>
+    <ClInclude Include="Mesh.hpp">
+      <Filter>Header Files\Modules\Rendering</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
