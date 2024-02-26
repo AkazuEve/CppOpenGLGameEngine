@@ -125,5 +125,11 @@
     <ClInclude Include="Mesh.hpp">
       <Filter>Header Files\Modules\Rendering</Filter>
     </ClInclude>
+    <ClInclude Include="UIManager.hpp">
+      <Filter>Header Files\Modules\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UIElement.hpp">
+      <Filter>Header Files\Modules\UI</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

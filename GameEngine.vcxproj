@@ -110,6 +110,8 @@
     <ClInclude Include="Renderer.hpp" />
     <ClInclude Include="Shader.hpp" />
     <ClInclude Include="Time.hpp" />
+    <ClInclude Include="UIElement.hpp" />
+    <ClInclude Include="UIManager.hpp" />
     <ClInclude Include="Util.hpp" />
     <ClInclude Include="WindowUtil.hpp" />
     <ClInclude Include="Window.hpp" />

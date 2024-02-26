@@ -2,10 +2,7 @@
 #include "Shader.hpp"
 #include "Camera.hpp"
 #include "Mesh.hpp"	
-
-#include <imgui/imgui.h>
-#include <imgui/imgui_impl_glfw.h>
-#include <imgui/imgui_impl_opengl3.h>
+#include "UIManager.hpp"
 
 std::vector<WindowHint> hints = { WindowHint(GLFW_CONTEXT_VERSION_MAJOR,	4),
 								  WindowHint(GLFW_CONTEXT_VERSION_MINOR,	6),
@@ -28,6 +25,7 @@ std::vector<GLuint> indices = {
 
 int main() {
 	Window::Init("Game Window", hints);
+	UIManager::Init();
 
 	Shader shader("Basic");
 	shader.Bind();
@@ -39,20 +37,6 @@ int main() {
 	mesh.SendModelMatrix(shader);
 	mesh.Bind();
 
-	IMGUI_CHECKVERSION();
-	ImGui::CreateContext();
-	ImGuiIO& io = ImGui::GetIO(); (void)io;
-	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
-	io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
-	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;         // Enable Docking
-	io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;       // Enable Multi-Viewport / Platform Windows
-
-	io.ConfigViewportsNoTaskBarIcon = true;
-
-	ImGui::StyleColorsDark();
-
-	ImGui_ImplGlfw_InitForOpenGL(Window::windowPtr, true);
-	ImGui_ImplOpenGL3_Init("#version 460");
 
 
 	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
@@ -65,43 +49,20 @@ int main() {
 
 		glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(mesh.indices.size()), GL_UNSIGNED_INT, 0);
 
-		ImGui_ImplOpenGL3_NewFrame();
-		ImGui_ImplGlfw_NewFrame();
-		ImGui::NewFrame();
+		UIManager::Run();
 
-		ImGui::Begin("Objects");
-			if (ImGui::TreeNode("Camera")) {
-				ImGui::DragFloat3("Position",  &camera.position.x, 0.1f, -100.0f, 100.0f);
-				ImGui::DragFloat3("Rotation",  &camera.rotation.x, 0.1f, -180.0f, 180.0f);
-				ImGui::DragFloat("Fov",        &camera.fov,        0.1f,    5.0f, 360.0f);
-				ImGui::DragFloat("Near plane", &camera.nearPlane,  0.01f,   0.0f, 100.0f);
-				ImGui::DragFloat("Far plane",  &camera.farPlane,   0.01f,  50.0f, 1000.0f);
-				ImGui::TreePop();
-			}
+
+			/*
 			if (ImGui::TreeNode("Triangles")) {
 				ImGui::DragFloat3("Position", &mesh.position.x, 0.1f, -100.0f, 100.0f);
 				ImGui::DragFloat3("Rotation", &mesh.rotation.x, 0.1f, -180.0f, 180.0f);
 				ImGui::DragFloat3("Scale",    &mesh.scale.x,       0.1f, -50.0f, 50.0f);
 				ImGui::TreePop();
 			}
-		ImGui::End();
-
-		ImGui::Render();
-		static int display_w, display_h;
-		glfwGetFramebufferSize(Window::windowPtr, &display_w, &display_h);
-		glViewport(0, 0, display_w, display_h);
-		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
-		static GLFWwindow* backup_current_context; backup_current_context = glfwGetCurrentContext();
-		ImGui::UpdatePlatformWindows();
-		ImGui::RenderPlatformWindowsDefault();
-		glfwMakeContextCurrent(backup_current_context);
+			*/
 	}
 
-	ImGui_ImplOpenGL3_Shutdown();
-	ImGui_ImplGlfw_Shutdown();
-	ImGui::DestroyContext();
-
+	UIManager::Terminate();
 	Window::Terminate();
 
 	return 0;
