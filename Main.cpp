@@ -25,7 +25,7 @@ std::vector<GLuint> indices = {
 
 int main() {
 	Window::Init("Game Window", hints);
-	UIManager::Init();
+	UIManager::InitImGui();
 
 	Shader shader("Basic");
 	shader.Bind();
@@ -33,36 +33,23 @@ int main() {
 	Camera camera;
 	camera.position = glm::vec3(0.0f, 0.0f, -2.0f);
 
-	Mesh mesh(vertices, indices);
+	Mesh mesh("Mesh0", vertices, indices);
 	mesh.SendModelMatrix(shader);
-	mesh.Bind();
-
-
-
+	
 	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 
 	while (Window::ShouldRunNextFrame()) {
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		camera.SendMatrix(shader);
+		mesh.Bind();
 		mesh.SendModelMatrix(shader);
-
 		glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(mesh.indices.size()), GL_UNSIGNED_INT, 0);
 
-		UIManager::Run();
-
-
-			/*
-			if (ImGui::TreeNode("Triangles")) {
-				ImGui::DragFloat3("Position", &mesh.position.x, 0.1f, -100.0f, 100.0f);
-				ImGui::DragFloat3("Rotation", &mesh.rotation.x, 0.1f, -180.0f, 180.0f);
-				ImGui::DragFloat3("Scale",    &mesh.scale.x,       0.1f, -50.0f, 50.0f);
-				ImGui::TreePop();
-			}
-			*/
+		UIManager::RenderUI();
 	}
 
-	UIManager::Terminate();
+	UIManager::TerminateImGui();
 	Window::Terminate();
 
 	return 0;

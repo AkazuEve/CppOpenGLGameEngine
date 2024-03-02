@@ -8,12 +8,13 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include "Shader.hpp"
+#include "UIManager.hpp"
 
 #include "Debug.hpp"
 
-class Mesh {
+class Mesh: public UIElement{
 public:
-	Mesh(const std::vector<GLfloat>& vertices, const std::vector<GLuint>& indices);
+	Mesh(const char* name, const std::vector<GLfloat>& vertices, const std::vector<GLuint>& indices);
 	~Mesh();
 
 	Mesh(const Mesh&) = delete;
@@ -21,6 +22,17 @@ public:
 
 	inline void Bind();
 	inline void SendModelMatrix(const Shader& shader);
+
+	virtual void OnUIOjectList() override {
+		if (ImGui::TreeNode(name)) {
+			ImGui::DragFloat3("Position", &position.x, 0.1f, -100.0f, 100.0f);
+			ImGui::DragFloat3("Rotation", &rotation.x, 0.1f, -180.0f, 180.0f);
+			ImGui::DragFloat3("Scale",    &scale.x,    0.1f, -50.0f,  50.0f);
+			if (ImGui::Button("Reset")) { position = glm::vec3(0.0f); rotation = glm::vec3(0.0f); scale = glm::vec3(1.0f); }
+
+			ImGui::TreePop();
+		}
+	};
 
 	std::vector<GLfloat> vertices;
 	std::vector<GLuint> indices;
@@ -30,12 +42,14 @@ public:
 	glm::vec3 scale = glm::vec3(1.0f);
 
 private:
+	const char* name;
+
 	glm::mat4 model = glm::mat4(1.0f);
 
 	GLuint VertexArrayObject, VertexBufferObject, IndexBufferObject;
 };
 
-Mesh::Mesh(const std::vector<GLfloat>& vertices, const std::vector<GLuint>& indices): vertices(vertices), indices(indices) {
+Mesh::Mesh(const char* name, const std::vector<GLfloat>& vertices, const std::vector<GLuint>& indices):name(name), vertices(vertices), indices(indices), UIElement(UIManager::uiObjects) {
 	glCreateVertexArrays(1, &VertexArrayObject);
 	glCreateBuffers(1, &VertexBufferObject);
 	glCreateBuffers(1, &IndexBufferObject);

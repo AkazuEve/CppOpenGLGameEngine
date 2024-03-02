@@ -10,8 +10,10 @@
 
 namespace Window {
 
-	float aspectRatio;
 	static GLFWwindow* windowPtr;
+
+	int width;
+	int height;
 
 	static bool isFullscreen = false;
 
@@ -40,13 +42,13 @@ namespace Window {
 
 	static void WindowResizeCallback(GLFWwindow* window, int width, int height) {
 		glViewport(0, 0, width, height);
+		Window::width = width;
+		Window::height = height;
 		if(width == 0 && height == 0) {
-			aspectRatio = 1.0f;
 			DEBUGPRINT("Window was minimized, avoiding explosions");
 		}
 		else {
-			aspectRatio = (float)width / (float)height;
-			DEBUGPRINT("Resolution changed width: " << width << " height: " << height << " aspect ratio: " << aspectRatio);
+			DEBUGPRINT("Resolution changed");
 		}
 	}
 
@@ -79,6 +81,8 @@ namespace Window {
 
 		glfwMakeContextCurrent(windowPtr);
 
+		glfwSwapInterval(1);
+
 		glfwSetFramebufferSizeCallback(windowPtr, WindowResizeCallback);
 		glfwSetKeyCallback(windowPtr, KeyCallback);
 
@@ -100,8 +104,9 @@ namespace Window {
 			DEBUGPRINT("OpenGL Debug Enabled");
 		);
 
-		aspectRatio = ((float)mode->width / 2) / ((float)mode->height / 2);
 		glViewport(0, 0, mode->width / 2, mode->height / 2);
+		width = mode->width;
+		height = mode->height;
 	}
 
 	void Terminate() {
@@ -120,5 +125,9 @@ namespace Window {
 		}
 	
 		return (!glfwWindowShouldClose(windowPtr));
+	}
+
+	inline void SetWindowSouldClose(bool shouldClose) {
+		glfwSetWindowShouldClose(windowPtr, shouldClose);
 	}
 }
