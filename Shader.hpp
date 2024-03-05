@@ -13,7 +13,7 @@ public:
 	Shader(const Shader&) = delete;
 	Shader& operator= (const Shader&) = delete;
 
-	inline void Bind() const { glUseProgram(m_ID); DEBUGPRINT("Bound shader " << m_name); }
+	inline void Bind() const { glUseProgram(m_ID); }
 	inline GLuint GetID() const { return m_ID; }
 
 private:

@@ -24,6 +24,7 @@ UIElement::UIElement(std::vector<UIElement*>& elements) {
 
 namespace UIManager {
 	std::vector<UIElement*> uiObjects;
+	std::vector<UIElement*> uiCameras;
 
 	float viewPortAspectRatio = 1.0f;
 
@@ -34,6 +35,7 @@ namespace UIManager {
 
 	static bool vieportOpen = true;
 	static bool objectListOpen = true;
+	static bool cameraListOpen = true;
 	static bool consoleOpen = true;
 
 	void InitImGui() {
@@ -86,9 +88,10 @@ namespace UIManager {
 			}
 			if (ImGui::BeginMenu("Windows"))
 			{
-				if (ImGui::MenuItem("Viewport")) { vieportOpen = !vieportOpen;  }
-				if (ImGui::MenuItem("Object List")) { objectListOpen = !objectListOpen; }
-				if (ImGui::MenuItem("Console")) { consoleOpen = !consoleOpen; }
+				if (ImGui::MenuItem("Viewport"))          { vieportOpen = !vieportOpen;  }
+				if (ImGui::MenuItem("Object List"))       { objectListOpen = !objectListOpen; }
+				if (ImGui::MenuItem("Camera List"))       { cameraListOpen = !cameraListOpen; }
+				if (ImGui::MenuItem("Console"))			  { consoleOpen = !consoleOpen; }
 				if (ImGui::MenuItem("ImGui Demo Window")) { demoWindowOpen = !demoWindowOpen; }
 				
 				ImGui::EndMenu();
@@ -103,8 +106,8 @@ namespace UIManager {
 			
 			wsize = ImGui::GetWindowSize();
 			viewPortAspectRatio = wsize.x / wsize.y;
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, wsize.x, wsize.y, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
-			ImGui::Image((ImTextureID)frameBufferTexture, wsize, ImVec2(0, 1), ImVec2(1, 0));
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, (GLsizei)wsize.x, (GLsizei)wsize.y, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
+			ImGui::Image(*(ImTextureID*)&frameBufferTexture, wsize, ImVec2(0, 1), ImVec2(1, 0));
 
 			ImGui::EndChild();
 			ImGui::End();
@@ -113,6 +116,14 @@ namespace UIManager {
 		if (objectListOpen) {
 			ImGui::Begin("Objects", &objectListOpen);
 			for (UIElement* element : uiObjects) {
+				element->OnUIOjectList();
+			}
+			ImGui::End();
+		}
+		
+		if (cameraListOpen) {
+			ImGui::Begin("Cameras", &objectListOpen);
+			for (UIElement* element : uiCameras) {
 				element->OnUIOjectList();
 			}
 			ImGui::End();
@@ -139,7 +150,7 @@ namespace UIManager {
 		glfwMakeContextCurrent(backup_current_context);
 
 		glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
-		glViewport(0, 0, wsize.x, wsize.y);
+		glViewport(0, 0, (GLsizei)wsize.x, (GLsizei)wsize.y);
 	}
 
 	void TerminateImGui() {
